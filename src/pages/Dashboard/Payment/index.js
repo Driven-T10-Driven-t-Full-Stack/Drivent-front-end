@@ -1,3 +1,7 @@
+import TicketInfo from '../../../components/TicketInfo';
+
 export default function Payment() {
-  return 'Pagamento: Em breve!';
+  return (
+    <TicketInfo />
+  );
 }

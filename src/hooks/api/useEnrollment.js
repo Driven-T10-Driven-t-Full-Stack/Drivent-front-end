@@ -13,6 +13,9 @@ export default function useEnrollment() {
     act: getEnrollment
   } = useAsync(() => enrollmentApi.getPersonalInformations(token));
 
+  // eslint-disable-next-line no-console
+  console.log(enrollment);
+
   return {
     enrollment,
     enrollmentLoading,

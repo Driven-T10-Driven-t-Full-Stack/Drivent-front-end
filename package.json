@@ -25,11 +25,11 @@
     "react-toastify": "^7.0.4",
     "react-useinterval": "^1.0.2",
     "start": "^5.1.0",
-    "styled-components": "^5.3.0",
+    "styled-components": "^5.3.11",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
