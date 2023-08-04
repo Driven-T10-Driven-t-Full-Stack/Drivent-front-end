@@ -19,6 +19,23 @@ export function useTicket() {
   };
 }
 
+export function useTicketUser() {
+  const token = useToken();
+  const {
+    data: ticket,
+    loading: ticketLoading,
+    error: ticketError,
+    act: getTicketUser
+  } = useAsync(() => ticketApi.ticketUser(token));
+
+  return {
+    ticket,
+    ticketLoading,
+    ticketError,
+    getTicketUser
+  };
+}
+
 export function useTicketPost() {
   const token = useToken();
   const {

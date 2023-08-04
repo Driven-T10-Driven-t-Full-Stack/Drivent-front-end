@@ -14,7 +14,8 @@ export default function Input({
   onChange,
   onFocus,
   placeholder,
-  className
+  className,
+  error
 }) {
   return (
     <>
@@ -35,8 +36,8 @@ export default function Input({
               variant="outlined"
               fullWidth
               placeholder={placeholder}
-              /* error={name === 'expiry'}
-              helperText={name === 'expiry' && 'errrouuuu'} */
+              error={name === 'expiry' && error}
+              helperText={name === 'expiry' && error && 'Data Inválida'}
               style={{ border: '1px solid #d5d5d5', borderRadius: '5px',  }}
             />
           )}

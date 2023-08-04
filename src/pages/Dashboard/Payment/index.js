@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react';
+/* import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTicket, useTicketPost } from '../../../hooks/api/useTicket';
 import { toast } from 'react-toastify';
@@ -110,8 +109,8 @@ const Button = styled.button`
   :hover{
     background-color: #FFEED2;
   }
-;
-=======
+`; */
+
 import styled from 'styled-components';
 import PaymentsInformation from '../../../components/PaymentsInformation';
 import { Typography } from '@material-ui/core';

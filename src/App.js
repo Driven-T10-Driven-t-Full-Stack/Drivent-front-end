@@ -20,7 +20,6 @@ import { EventInfoProvider } from './contexts/EventInfoContext';
 import { UserProvider } from './contexts/UserContext';
 
 import useToken from './hooks/useToken';
-import PaymentsInformation from './components/PaymentsInformation';
 
 export default function App() {
   return (
