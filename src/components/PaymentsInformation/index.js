@@ -1,24 +1,31 @@
+import { useEffect, useState } from 'react';
+import CreditCardPayment from './CreditCardPayment';
 import { Typography } from '@material-ui/core';
-import { IconContext } from 'react-icons';
-import { FcSimCardChip } from 'react-icons/fc';
 import styled from 'styled-components';
+import ConfirmPayment from './confirmPayment';
+import { useTicketUser } from '../../hooks/api/useTicketType';
 
 export default function PaymentsInformation() {
+  const [ticket, setTicket] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const { getTicketUser } = useTicketUser();
+
+  useEffect(async() => {
+    const tickets = await getTicketUser();
+    setTicket(tickets.data);
+    setTotalPrice(300 + tickets.data?.TicketType.price);
+  }, []);
+
   return (
     <>
       <StyledTypography variant='h6'>Ingresso escolhido</StyledTypography>
       <BoxConfirmation>
-        <Typography variant='subtitle1' component='div' style={{ color: '#454545' }}> Presencial + com Hotel </Typography>
-        <Typography variant='body2' component='div' style={{ color: '#898989' }}> R$ 600 </Typography>
+        <Typography variant='subtitle1' component='div' style={{ color: '#454545' }}> {ticket?.TicketType.isRemote ? 'Online' : ticket?.TicketType.includesHotel ? 'Presencial + Com Hotel' : 'Presencial + Sem Hotel'} </Typography>
+        <Typography variant='body2' component='div' style={{ color: '#898989' }}> R$ {totalPrice} </Typography>
       </BoxConfirmation>
       <StyledTypography variant='h6'>Pagamento</StyledTypography>
-      <Payment>
-        <StyledCard >
-          <div style={{ position: 'absolute', top: '15px', left: '20px' }}>
-            <FcSimCardChip size={50}/>
-          </div>
-        </StyledCard>
-      </Payment>
+
+      {(ticket?.status === 'RESERVED' || ticket === undefined)  ? <CreditCardPayment ticket={ticket} totalPrice={totalPrice}/> : <ConfirmPayment />}
     </>
   );
 }
@@ -41,16 +48,5 @@ const BoxConfirmation = styled.div`
     align-items: center;
 `;
 
-const Payment = styled.div`
-`;
 
-const StyledCard = styled.div`
-    width: 300px;
-    height: 200px;
-    background-color: rgb(146,146,146);
-    border-radius: 20px;
 
-    margin-top: 10px;
-
-    position: relative;
-`;
