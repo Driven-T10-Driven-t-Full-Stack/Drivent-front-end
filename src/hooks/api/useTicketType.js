@@ -1,25 +1,54 @@
 import useAsync from '../useAsync';
 import useToken from '../useToken';
-
 import * as ticketTypeApi from '../../services/ticketTypeApi';
 
-export default function useTicketType() {
+export function useTicket() {
   const token = useToken();
-  
   const {
-    data: tickets,
+    data: ticket,
     loading: ticketLoading,
     error: ticketError,
-    act: ticketType,
-  } = useAsync(() => ticketTypeApi.getTicketType(token));
-
-  // eslint-disable-next-line no-console
-  console.log(tickets);
+    act: getTicket
+  } = useAsync(() => ticketTypeApi.ticketTypes(token));
 
   return {
-    tickets,
+    ticket,
     ticketLoading,
     ticketError,
-    ticketType,
+    getTicket
+  };
+}
+
+export function useTicketUser() {
+  const token = useToken();
+  const {
+    data: ticket,
+    loading: ticketLoading,
+    error: ticketError,
+    act: getTicketUser
+  } = useAsync(() => ticketTypeApi.ticketUser(token));
+
+  return {
+    ticket,
+    ticketLoading,
+    ticketError,
+    getTicketUser
+  };
+}
+
+export function useTicketPost() {
+  const token = useToken();
+  const {
+    data: ticket,
+    loading: ticketLoading,
+    error: ticketError,
+    act: postTicket
+  } = useAsync((data) => ticketTypeApi.postTicket(token, data));
+
+  return {
+    ticket,
+    ticketLoading,
+    ticketError,
+    postTicket
   };
 }

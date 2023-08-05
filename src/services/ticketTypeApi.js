@@ -1,12 +1,28 @@
 import api from './api';
 
-export async function getTicketType(token) {
-  const response = await api.get('/tickets/types', {
+export async function ticketTypes(token) {
+  const response = api.get('/tickets/types', {
     headers: {
       Authorization: `Bearer ${token}`,
-    },
+    }
   });
-
   return response;
 }
-//
+
+export async function ticketUser(token) {
+  const response = api.get('/tickets', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
+  return response;
+}
+
+export async function postTicket(token, body) {
+  const response = api.post('/tickets', body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
+  return response;
+}

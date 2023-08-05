@@ -1,55 +1,30 @@
 import styled from 'styled-components';
 import useEnrollment from '../../hooks/api/useEnrollment';
-import TicketsType from '../Tickets';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import api from '../../services/api';
+import TicketType from '../Tickets';
 
 export default function TicketInfo() {
   const { enrollment } = useEnrollment();
-  const [tickets, setTickets] = useState();
-  // const token = window.localStorage.getItem('token');
-
-  // useEffect(() => {
-  //   function subscribePlan() {
-  //     const config = {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     };
-  //     const promise = api.get('/tickets/types', config);
-  //     promise.then((res) => {
-  //       // eslint-disable-next-line no-console
-  //       console.log(res.data);
-  //       setTickets(res.data);
-  //     });
-  //     promise.catch((err) => {
-  //       // eslint-disable-next-line no-console
-  //       console.log(err);
-  //       alert(`Erro: ${err}`);
-  //     });  
-  //   };
-  //   subscribePlan();
-  // }, []);
-
   return (
     <MainContainer>
-      <h1>Ingresso e pagamento</h1>
       {enrollment ?
         <>
           <span>Primeiro, escolha sua modalidade de ingresso</span>
-          <TicketsType tickets={tickets} />
+          <TicketType />
         </>
         :
-        <DivSpan>
-          <span>Você precisa completar sua inscrição antes</span>
-          <span> de prosseguir pra escolha de ingresso</span>
-        </DivSpan>
+        <>
+          <DivSpan>
+            <span>Você precisa completar sua inscrição antes</span>
+            <span> de prosseguir pra escolha de ingresso</span>
+          </DivSpan>
+        </>
       }
     </MainContainer>
     
   );
 }
 
-const MainContainer = styled.form`
+const MainContainer = styled.div`
 
   h1 {
     color: #000000; 
@@ -77,5 +52,5 @@ const DivSpan = styled.div`
     margin-top: 190px;
     line-height: 24px;
   }
-
 `;
+
