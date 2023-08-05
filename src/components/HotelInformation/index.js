@@ -4,11 +4,24 @@ import useHotel from '../../hooks/api/useHotel.js';
 import Typography from '@material-ui/core/Typography';
 import HotelBox from './HotelBox.js';
 import errorMsgType from './ErrorMsgType.js';
+import useHotelRooms from '../../hooks/api/useHotelRooms.js';
+import RoomBox from './RoomBox.js';
 
 export default function HotelInformation() {
   const { hotels, hotelsError, hotelsLoading } = useHotel();
-  const [hotelRooms, setHotelRooms] = useState(); //recupera salas clicadas atuais
+  //const [hotelRooms, setHotelRooms] = useState(); //recupera salas clicadas atuais
   const [selectedHotel, setSelectedHotel] = useState(false);
+  const { getHotelRooms, hotelRooms, hotelRoomsError } = useHotelRooms();
+  // useEffect(() => {
+  //   getHotelRooms(hotelId);
+  // }, []);
+
+  useEffect(() => {
+    if (selectedHotel) {
+      // Chamamos a função getRooms com o novo valor de hotel.id quando selectedHotel mudar
+      getHotelRooms(selectedHotel);
+    }
+  }, [selectedHotel]);
 
   if (hotelsLoading) {
     return 'Carregando...';
@@ -17,7 +30,7 @@ export default function HotelInformation() {
   if (hotelsError) {
     return (
       <ErrorContainer>
-        <StyledError>{errorMsgType(hotelsError.response.data)}</StyledError>
+        <StyledError>{errorMsgType(hotelsError.response.data.message)}</StyledError>
       </ErrorContainer>
     );
   }
@@ -36,6 +49,7 @@ export default function HotelInformation() {
                 hotel={hotel}
                 setSelectedHotel={setSelectedHotel}
                 selectedHotel={selectedHotel}
+                getRooms={getHotelRooms}
               />
             ))}
           </HotelListWrapper>
@@ -46,7 +60,13 @@ export default function HotelInformation() {
             <StyledMessage variant="h6" style={{ fontSize: '20px', lineBreak: 'normal' }}>
               Ótima pedida! Agora escolha seu quarto:
             </StyledMessage>
-            <RoomsWrapper>Quartos do hotel de ID {selectedHotel}</RoomsWrapper>
+            {hotelRooms && (
+              <RoomsWrapper>
+                {hotelRooms.Rooms.map((room) => (
+                  <RoomBox key={room.id} room={room} selectedHotel={selectedHotel}/>
+                ))}
+              </RoomsWrapper>
+            )}
           </>
         )}
       </HotelPageContainer>
@@ -56,6 +76,9 @@ export default function HotelInformation() {
 
 const RoomsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
 `;
 
 const HotelListWrapper = styled.div`
@@ -90,7 +113,6 @@ const StyledError = styled(Typography)`
 `;
 
 const HotelPageContainer = styled.div`
-  height: 80%;
   display: flex;
   flex-direction: column;
   gap: 20px;

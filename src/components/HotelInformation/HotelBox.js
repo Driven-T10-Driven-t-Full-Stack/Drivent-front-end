@@ -1,15 +1,16 @@
 import { Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-export default function HotelBox({ hotel, selectedHotel, setSelectedHotel }) {
+export default function HotelBox({ hotel, selectedHotel, setSelectedHotel, getRooms }) {
   function getHotelRooms(hotelId) {
     setSelectedHotel(hotelId);
+    getRooms(hotelId);
     //add função de retornar lista de quartos
   }
-
+  
   return (
-    <HotelContainer selectedHotel={selectedHotel} hotelId={hotel.id} onClick={() => getHotelRooms(hotel.id)}>
+    <HotelContainer selectedHotel={selectedHotel} hotelId={hotel.id} onClick={() => setSelectedHotel(hotel.id)}>
       <ImgBox>
         <img src={hotel.image} alt="HotelImg" />
       </ImgBox>
@@ -68,4 +69,5 @@ const HotelContainer = styled.div`
   background-color: ${({ selectedHotel, hotelId }) => (selectedHotel === hotelId ? '#FFEED2' : '#ddd')};
   padding: 15px;
   border-radius: 10px;
+  margin-bottom: 20px;
 `;
