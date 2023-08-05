@@ -4,6 +4,7 @@ import CreditCardPayment from './CreditCardPayment';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import ConfirmPayment from './confirmPayment';
+import { useTicketUser } from '../../hooks/api/useTicketType';
 
 export default function PaymentsInformation() {
   const [ticket, setTicket] = useState();
@@ -47,4 +48,3 @@ const BoxConfirmation = styled.div`
     justify-content: center;
     align-items: center;
 `;
-

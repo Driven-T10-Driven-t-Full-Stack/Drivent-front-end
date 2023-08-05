@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTicket, useTicketPost } from '../../../hooks/api/useTicket';
@@ -111,15 +112,30 @@ const Button = styled.button`
   }
 `; */
 
+=======
+>>>>>>> 73b999dd11cbb81885e4659cc40034dad78d0b49
 import styled from 'styled-components';
 import PaymentsInformation from '../../../components/PaymentsInformation';
+import TicketInfo from '../../../components/TicketInfo';
 import { Typography } from '@material-ui/core';
+import { useTicket } from '../../../hooks/api/useTicketType';
 
 export default function Payment() {
-  return (<>
-    <StyledTypography variant='h4'>Ingresso e pagamento</StyledTypography>
-    <PaymentsInformation />
-  </>);
+  const { ticket } = useTicket();
+  return (
+    <>
+      <StyledTypography variant='h4'>Ingresso e pagamento</StyledTypography>
+      {!ticket ?
+        <TicketInfo/>
+        :
+        <div></div>
+      }
+      {ticket ?
+        <PaymentsInformation />
+        :
+        <div></div>
+      }
+    </>);
 }
 
 const StyledTypography = styled(Typography)`
