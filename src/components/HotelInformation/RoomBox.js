@@ -2,20 +2,25 @@ import styled from 'styled-components';
 import { BsFillPersonFill, BsPerson } from 'react-icons/bs';
 
 export default function RoomBox({ room, selectedHotel }) {
-  console.log(room);
-  console.log(selectedHotel);
   return (
     <RoomContainer>
       <span>{selectedHotel}</span>
       <span>
-        <ArrayTest capacity={room.capacity} />
+        <ArrayTest capacity={room.capacity} bookings={room.bookings} />
       </span>
     </RoomContainer>
   );
 }
 
-function ArrayTest({ capacity }) {
-  return Array.from({ length: capacity }, (_, i) => <BsPerson fontSize={'30px'} />);
+function ArrayTest({ capacity, bookings }) {
+  const filled = Array.from({ length: bookings }, (_, i) => <BsFillPersonFill key={i} />);
+
+  const remainingCapacity = capacity - bookings;
+  const available = Array.from({ length: remainingCapacity }, (_, i) => <BsPerson key={i} />);
+
+  const allPersons = [...filled, ...available];
+
+  return allPersons;
 }
 
 const RoomContainer = styled.div`
