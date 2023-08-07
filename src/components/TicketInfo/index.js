@@ -3,7 +3,7 @@ import useEnrollment from '../../hooks/api/useEnrollment';
 import TicketType from '../Tickets';
 import { useTicketUser } from '../../hooks/api/useTicketType';
 
-export default function TicketInfo() {
+export default function TicketInfo({ setTotalPrice }) {
   const { enrollment } = useEnrollment();
   
   return (
@@ -11,7 +11,7 @@ export default function TicketInfo() {
       {enrollment ?
         <>
           <span>Primeiro, escolha sua modalidade de ingresso</span>
-          <TicketType />
+          <TicketType setTotalPrice={setTotalPrice} />
         </>
         :
         <>

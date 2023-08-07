@@ -7,11 +7,14 @@ import Input from './styled';
 import Button from '../Form/Button';
 import { toast } from 'react-toastify';
 import { usePaymentPost } from '../../hooks/api/usePayment';
+import { validData, validDate } from './validData';
 
 export default function CreditCardPayment({ ticket, totalPrice }) {
   const { postPayment } = usePaymentPost();
   const [issuer, setIssuer] = useState();
   const [error, setError] = useState(false);
+  const [errorExpiry, setErrorExpiry] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [state, setState] = useState({
     number: '',
     expiry: '',
@@ -22,7 +25,10 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
 
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
-
+    if (name === 'expiry') {
+      const error = validDate(state);
+      setErrorExpiry(error);
+    }
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -37,13 +43,20 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
 
   async function submitPayment(event) {
     event.preventDefault();
-    const [mes, ano] = state.expiry.split('/');
-    const mesAtual = new Date().getMonth() + 1;
-    const anoAtual = new Date().getFullYear().toString().slice(-2);
 
-    if((mes < 1 || mes > 13) || (ano < anoAtual) || ((ano <= anoAtual) && (mes < mesAtual)) ) setError(true);
-    else setError(false);
-   
+    console.log(removeNonNumeric(state.number).length);
+    console.log(removeNonNumeric(state.cvc).length);
+    const error = validData(state);
+    const errorExpiry = validDate(state);
+    setErrorExpiry(errorExpiry);
+
+    if (error || errorExpiry) {
+      setError(true);
+      toast('Dados inválidos do Cartão!');
+      setDisabled(false);
+      return;
+    }
+
     const cardData = {
       issuer: issuer,
       number: removeNonNumeric(state.number),
@@ -55,18 +68,20 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
 
     try {
       await postPayment({ ticketId: ticket.id, cardData });
+      setDisabled(true);
       setTimeout(() => {
         window.location.reload();
       }, 1500);
       toast('Pagamento feito com sucesso');
     } catch (error) {
       toast('Algo inesperado aconteceu!');
-    } 
+      setDisabled(false);
+    }
   }
 
   return (
     <>
-      <form onSubmit={ submitPayment }>
+      <form onSubmit={submitPayment}>
         <Payment>
           <Card>
             <Cards
@@ -87,6 +102,7 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
               value={state.number}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              error={error}
             />
             <Typography variant='subtitle1' component='div' style={{ color: '#A9A9A9' }}> E.g.: 49..., 51..., 36..., 37... </Typography>
             <Input
@@ -96,6 +112,7 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
               value={state.name}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              error={error}
             />
 
             <Input
@@ -106,8 +123,8 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
               value={state.expiry}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
-              error={error}
               className="validThru"
+              errorExpiry={errorExpiry}
             />
 
             <Input
@@ -119,11 +136,12 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
               onChange={handleInputChange}
               onFocus={handleInputFocus}
               className="cvc"
+              error={error}
             />
           </Inputs>
         </Payment>
 
-        <Button type="submit" >
+        <Button type="submit" disabled={disabled}>
           FINALIZAR PAGAMENTO
         </Button>
 

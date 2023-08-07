@@ -15,7 +15,8 @@ export default function Input({
   onFocus,
   placeholder,
   className,
-  error
+  error,
+  errorExpiry
 }) {
   return (
     <>
@@ -36,8 +37,7 @@ export default function Input({
               variant="outlined"
               fullWidth
               placeholder={placeholder}
-              error={name === 'expiry' && error}
-              helperText={name === 'expiry' && error && 'Data Inválida'}
+              error={((error && value === '')) ? true : ( (error || errorExpiry) && name === 'expiry') ? true : false}
               style={{ border: '1px solid #d5d5d5', borderRadius: '5px',  }}
             />
           )}
@@ -54,6 +54,7 @@ export default function Input({
           fullWidth
           placeholder={placeholder}
           className={className} 
+          error={ error && value === ''}
           style={{ marginBottom: '10px', border: '1px solid #d5d5d5', borderRadius: '5px' }}
         />
       )}

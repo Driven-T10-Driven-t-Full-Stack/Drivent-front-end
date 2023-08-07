@@ -9,6 +9,15 @@ export async function ticketTypes(token) {
   return response;
 }
 
+export async function ticketUser(token) {
+  const response = api.get('/tickets', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
+  return response;
+}
+
 export async function postTicket(token, body) {
   const response = api.post('/tickets', body, {
     headers: {
