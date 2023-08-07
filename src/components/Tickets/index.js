@@ -105,7 +105,7 @@ export default function TicketType() {
       if(ticketAlreadyReserved === 200) {
         return toast('Você já possui um ticket reservado');
       }
-      else if (presencialTicket.price === price && ticketAlreadyReserved !== 200) {
+      else if (presencialTicket.isRemote === price && ticketAlreadyReserved !== 200) {
         const tickedTypeIdNoHotel = presencialTicket.id;
         await postTicket({ ticketTypeId: tickedTypeIdNoHotel });
   
@@ -118,7 +118,7 @@ export default function TicketType() {
   
         toast('Ticket reservado com sucesso!');
       }
-      
+
       else if  (onlineTicket.price === price && ticketAlreadyReserved !== 200) {
         const ticketTypeIdOnline = onlineTicket.id; 
         await postTicket({ ticketTypeId: ticketTypeIdOnline });
