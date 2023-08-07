@@ -13,7 +13,6 @@ export default function useHotelRooms() {
     act: getHotelRooms,
   } = useAsync((hotelId) => {
     // Verifica se hotelId é nulo ou indefinido e retorna null para hotelRooms
-    console.log(hotelId);
     // if (!hotelId) {
     //   return null;
     // }

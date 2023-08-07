@@ -9,13 +9,9 @@ import RoomBox from './RoomBox.js';
 
 export default function HotelInformation() {
   const { hotels, hotelsError, hotelsLoading } = useHotel();
-  //const [hotelRooms, setHotelRooms] = useState(); //recupera salas clicadas atuais
   const [selectedHotel, setSelectedHotel] = useState(false);
-  const { getHotelRooms, hotelRooms, hotelRoomsError } = useHotelRooms();
-  // useEffect(() => {
-  //   getHotelRooms(hotelId);
-  // }, []);
-
+  const { getHotelRooms, hotelRooms } = useHotelRooms();
+ 
   useEffect(() => {
     if (selectedHotel) {
       // Chamamos a função getRooms com o novo valor de hotel.id quando selectedHotel mudar

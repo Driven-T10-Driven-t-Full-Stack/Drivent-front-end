@@ -1,14 +1,8 @@
 import { Typography } from '@material-ui/core';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getRoomAvailabilityText } from './getRoomAvailabilityText.js';
 
 export default function HotelBox({ hotel, selectedHotel, setSelectedHotel, getRooms }) {
-  function getHotelRooms(hotelId) {
-    setSelectedHotel(hotelId);
-    getRooms(hotelId);
-    //add função de retornar lista de quartos
-  }
-  
   return (
     <HotelContainer selectedHotel={selectedHotel} hotelId={hotel.id} onClick={() => setSelectedHotel(hotel.id)}>
       <ImgBox>
@@ -23,7 +17,7 @@ export default function HotelBox({ hotel, selectedHotel, setSelectedHotel, getRo
             Tipo de acomodação
           </Typography>
           <Typography variant="subtitle2" component="p" style={{ lineHeight: '1em' }}>
-            Single e Double
+            {getRoomAvailabilityText(hotel.accomodationTypes)}
           </Typography>
         </div>
         <div>
@@ -31,7 +25,7 @@ export default function HotelBox({ hotel, selectedHotel, setSelectedHotel, getRo
             Vagas disponíveis
           </Typography>
           <Typography variant="subtitle2" component="p" style={{ lineHeight: '1em' }}>
-            20
+            {hotel.availableRoomCapacity}
           </Typography>
         </div>
       </HotelInfo>
