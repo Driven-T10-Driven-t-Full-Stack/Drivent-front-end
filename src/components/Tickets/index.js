@@ -17,8 +17,7 @@ export default function TicketType() {
   const [forthColor, setForthColor] = useState('black');
   const [disableFirstButton, setDisableFirstButton] = useState(false);
   const [disableSecondButton, setDisableSecondButton] = useState(false);
-  // const [disableThirdButton, setDisableThirdButton] = useState(false);
-  // const [disableForthButton, setDisableForthButton] = useState(false);
+  const [disableThirdButton, setDisableThirdButton] = useState(false);
   const { getTicket } = useTicket();
   const { postTicket } = useTicketPost();
   const { getTicketUser } = useTicketUser();
@@ -108,14 +107,16 @@ export default function TicketType() {
       else if (presencialTicket.isRemote === price && ticketAlreadyReserved !== 200) {
         const tickedTypeIdNoHotel = presencialTicket.id;
         await postTicket({ ticketTypeId: tickedTypeIdNoHotel });
-  
+
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
       
       else if  (ticketTypeIds.price === price && ticketAlreadyReserved !== 200) {
         const ticketTypeWithHotel = ticketTypeIds.id; 
         await postTicket({ ticketTypeId: ticketTypeWithHotel });
-  
+        
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
 
@@ -123,6 +124,7 @@ export default function TicketType() {
         const ticketTypeIdOnline = onlineTicket.id; 
         await postTicket({ ticketTypeId: ticketTypeIdOnline });
 
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
     }catch {
@@ -161,7 +163,7 @@ export default function TicketType() {
         }
         <Checkout checkoutDisplay={checkoutDisplay}>
           <h2>Fechado! O total ficou em <strong>R$ {price}</strong>. Agora é só confirmar:</h2>
-          <button onClick={() => reservedOnline()}>RESERVAR INGRESSO</button>
+          <button onClick={() => reservedOnline()} disabled={disableThirdButton}>RESERVAR INGRESSO</button>
         </Checkout>
       </Container>
     </>
