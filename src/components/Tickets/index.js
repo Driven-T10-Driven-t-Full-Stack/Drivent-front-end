@@ -18,6 +18,8 @@ export default function TicketType({ setTotalPrice }) {
   const [disableFirstButton, setDisableFirstButton] = useState(false);
   const [disableSecondButton, setDisableSecondButton] = useState(false);
   const [disableThirdButton, setDisableThirdButton] = useState(false);
+  const [disableForthButton, setDisableForthButton] = useState(false);
+  const [disabledCheckoutButton, setDisabledCheckoutButton] = useState(false);
   const { getTicket } = useTicket();
   const { postTicket } = useTicketPost();
   const { getTicketUser } = useTicketUser();
@@ -59,6 +61,10 @@ export default function TicketType({ setTotalPrice }) {
     changeColor();
     setDisplay('flex');
     presencial();
+    if (price === 150) {
+      changePlanOnline();
+    }
+    setDisableSecondButton(false);
     setDisableFirstButton(true);
   };
 
@@ -66,22 +72,62 @@ export default function TicketType({ setTotalPrice }) {
     changeColor2();
     setCheckoutDisplay('block');
     online();
-    setDisableFirstButton(true);
+    if (price === 250) {
+      changePlanPresencial();
+    }
+
+    if (price === 600) {
+      changePresencialToOnline();
+    }
+    setDisableSecondButton(true);
+    setDisableFirstButton(false);
   };
 
   function ticketOnline3() {
     setCheckoutDisplay('block');
     changeColor3();
     noHotel();
-    setDisableSecondButton(true);
+
+    if (price === 600) {
+      changeNoHotel();
+    } 
+    setDisableThirdButton(true);
+    setDisableForthButton(false);
   };
 
   function ticketOnline4() {
     setCheckoutDisplay('block');
     changeColor4();
     withHotel();
-    setDisableSecondButton(true);
+
+    if (price === 250) {
+      changeWithHotel();
+    }
+    setDisableThirdButton(false);
+    setDisableForthButton(true);
   };
+
+  function changePlanPresencial() {
+    setPrice((price - 250) + 150);
+    setDisplay(false);
+  }
+
+  function changePlanOnline() {
+    setPrice((price - 150) + 250);
+  }
+
+  function changeNoHotel() {
+    setPrice((price - 350) + 0);
+  }
+
+  function changeWithHotel() {
+    setPrice((price - 0) + 350);
+  }
+
+  function changePresencialToOnline() {
+    setPrice((price - 600) + 150);
+    setDisplay(false);
+  }
 
   function presencial() {
     setPrice(price + 250);
@@ -108,24 +154,24 @@ export default function TicketType({ setTotalPrice }) {
       else if (presencialTicket.price === price && ticketAlreadyReserved !== 200) {
         const tickedTypeIdNoHotel = presencialTicket.id;
         await postTicket({ ticketTypeId: tickedTypeIdNoHotel });
-  
-        setDisableThirdButton(true);
+        
+        setDisabledCheckoutButton(true);
         toast('Ticket reservado com sucesso!');
       }
       
       else if  (ticketTypeIds.price === price && ticketAlreadyReserved !== 200) {
         const ticketTypeWithHotel = ticketTypeIds.id; 
         await postTicket({ ticketTypeId: ticketTypeWithHotel });
-  
-        setDisableThirdButton(true);
+
+        setDisabledCheckoutButton(true);
         toast('Ticket reservado com sucesso!');
       }
-      
+
       else if  (onlineTicket.price === price && ticketAlreadyReserved !== 200) {
         const ticketTypeIdOnline = onlineTicket.id; 
         await postTicket({ ticketTypeId: ticketTypeIdOnline });
 
-        setDisableThirdButton(true);
+        setDisabledCheckoutButton(true);
         toast('Ticket reservado com sucesso!');
       }
       setTimeout(() => {
@@ -140,23 +186,26 @@ export default function TicketType({ setTotalPrice }) {
     <>
       <Container>
         <DivButton>
-          <button className={firstColor} onClick={ticketOnline} disabled={disableFirstButton}>
+          <button className={firstColor} onClick={ticketOnline}disabled={disableFirstButton} >
             <h2>{presencialTicket.name}</h2>
             <h2>R$ {presencialTicket.price}</h2>
           </button>
-          <button className={secondColor} onClick={ticketOnline2}disabled={disableFirstButton} >
+          <button className={secondColor} onClick={ticketOnline2} disabled={disableSecondButton}>
             <h2>{onlineTicket.name}</h2>
             <h2>R$ {onlineTicket.price}</h2>
           </button>
         </DivButton>
         {display ?
           <>
+            <>
+              <span>Ótimo! Agora escolha sua modalidade de hospedagem</span>
+            </>
             <DivButton >
-              <button className={thirdColor} onClick={ticketOnline3} disabled={disableSecondButton}>
+              <button className={thirdColor} onClick={ticketOnline3} disabled={disableThirdButton}>
                 <h2>Sem Hotel</h2>
                 <h2 >+ R$ 0</h2>
               </button>
-              <button className={forthColor} onClick={ticketOnline4} disabled={disableSecondButton}>
+              <button className={forthColor} onClick={ticketOnline4} disabled={disableForthButton} >
                 <h2>Com Hotel</h2>
                 <h2>+ R$ 350</h2>
               </button>
@@ -167,7 +216,7 @@ export default function TicketType({ setTotalPrice }) {
         }
         <Checkout checkoutDisplay={checkoutDisplay}>
           <h2>Fechado! O total ficou em <strong>R$ {price}</strong>. Agora é só confirmar:</h2>
-          <button onClick={() => reservedOnline()} disabled={disableThirdButton}>RESERVAR INGRESSO</button>
+          <button onClick={() => reservedOnline()} disabled={disabledCheckoutButton}>RESERVAR INGRESSO</button>
         </Checkout>
       </Container>
     </>

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import TicketType from '../Tickets';
+import { useTicketUser } from '../../hooks/api/useTicketType';
 
 export default function TicketInfo({ setTotalPrice }) {
   const { enrollment } = useEnrollment();
+  
   return (
     <MainContainer>
       {enrollment ?
