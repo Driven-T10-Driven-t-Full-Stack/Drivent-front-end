@@ -44,8 +44,8 @@ export default function CreditCardPayment({ ticket, totalPrice }) {
   async function submitPayment(event) {
     event.preventDefault();
 
-    console.log(removeNonNumeric(state.number).length)
-    console.log(removeNonNumeric(state.cvc).length)
+    console.log(removeNonNumeric(state.number).length);
+    console.log(removeNonNumeric(state.cvc).length);
     const error = validData(state);
     const errorExpiry = validDate(state);
     setErrorExpiry(errorExpiry);
