@@ -18,7 +18,6 @@ export default function TicketType({ setTotalPrice }) {
   const [disableFirstButton, setDisableFirstButton] = useState(false);
   const [disableSecondButton, setDisableSecondButton] = useState(false);
   const [disableThirdButton, setDisableThirdButton] = useState(false);
-  const [disableForthButton, setDisableForthButton] = useState(false);
   const { getTicket } = useTicket();
   const { postTicket } = useTicketPost();
   const { getTicketUser } = useTicketUser();
@@ -60,7 +59,7 @@ export default function TicketType({ setTotalPrice }) {
     changeColor();
     setDisplay('flex');
     presencial();
-    setDisableSecondButton(true);
+    setDisableFirstButton(true);
   };
 
   function ticketOnline2() {
@@ -74,14 +73,14 @@ export default function TicketType({ setTotalPrice }) {
     setCheckoutDisplay('block');
     changeColor3();
     noHotel();
-    setDisableForthButton(true);
+    setDisableSecondButton(true);
   };
 
   function ticketOnline4() {
     setCheckoutDisplay('block');
     changeColor4();
     withHotel();
-    setDisableThirdButton(true);
+    setDisableSecondButton(true);
   };
 
   function presencial() {
@@ -110,6 +109,7 @@ export default function TicketType({ setTotalPrice }) {
         const tickedTypeIdNoHotel = presencialTicket.id;
         await postTicket({ ticketTypeId: tickedTypeIdNoHotel });
   
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
       
@@ -117,6 +117,7 @@ export default function TicketType({ setTotalPrice }) {
         const ticketTypeWithHotel = ticketTypeIds.id; 
         await postTicket({ ticketTypeId: ticketTypeWithHotel });
   
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
       
@@ -124,6 +125,7 @@ export default function TicketType({ setTotalPrice }) {
         const ticketTypeIdOnline = onlineTicket.id; 
         await postTicket({ ticketTypeId: ticketTypeIdOnline });
 
+        setDisableThirdButton(true);
         toast('Ticket reservado com sucesso!');
       }
       setTimeout(() => {
@@ -142,7 +144,7 @@ export default function TicketType({ setTotalPrice }) {
             <h2>{presencialTicket.name}</h2>
             <h2>R$ {presencialTicket.price}</h2>
           </button>
-          <button className={secondColor} onClick={ticketOnline2}disabled={disableSecondButton} >
+          <button className={secondColor} onClick={ticketOnline2}disabled={disableFirstButton} >
             <h2>{onlineTicket.name}</h2>
             <h2>R$ {onlineTicket.price}</h2>
           </button>
@@ -150,11 +152,11 @@ export default function TicketType({ setTotalPrice }) {
         {display ?
           <>
             <DivButton >
-              <button className={thirdColor} onClick={ticketOnline3} disabled={disableThirdButton}>
+              <button className={thirdColor} onClick={ticketOnline3} disabled={disableSecondButton}>
                 <h2>Sem Hotel</h2>
                 <h2 >+ R$ 0</h2>
               </button>
-              <button className={forthColor} onClick={ticketOnline4} disabled={disableForthButton}>
+              <button className={forthColor} onClick={ticketOnline4} disabled={disableSecondButton}>
                 <h2>Com Hotel</h2>
                 <h2>+ R$ 350</h2>
               </button>
@@ -165,7 +167,7 @@ export default function TicketType({ setTotalPrice }) {
         }
         <Checkout checkoutDisplay={checkoutDisplay}>
           <h2>Fechado! O total ficou em <strong>R$ {price}</strong>. Agora é só confirmar:</h2>
-          <button onClick={() => reservedOnline()}>RESERVAR INGRESSO</button>
+          <button onClick={() => reservedOnline()} disabled={disableThirdButton}>RESERVAR INGRESSO</button>
         </Checkout>
       </Container>
     </>
