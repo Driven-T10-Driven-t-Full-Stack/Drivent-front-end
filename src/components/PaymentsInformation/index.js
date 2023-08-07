@@ -4,17 +4,14 @@ import CreditCardPayment from './CreditCardPayment';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import ConfirmPayment from './confirmPayment';
-import { useTicketUser } from '../../hooks/api/useTicketType';
 
-export default function PaymentsInformation() {
+export default function PaymentsInformation({ totalPrice }) {
   const [ticket, setTicket] = useState();
-  const [totalPrice, setTotalPrice] = useState(0);
   const { getTicketUser } = useTicketUser();
 
   useEffect(async() => {
     const tickets = await getTicketUser();
     setTicket(tickets.data);
-    setTotalPrice(300 + tickets.data?.TicketType.price);
   }, []);
 
   return (
