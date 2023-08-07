@@ -4,7 +4,7 @@ import { useTicket, useTicketPost, useTicketUser } from '../../hooks/api/useTick
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-export default function TicketType() {
+export default function TicketType({ setTotalPrice }) {
   const [ticketTypeIds, setTicketsTypeIds] = useState([]);
   const [ticketAlreadyReserved, setTicketAlreadyReserved] = useState();
   const [presencialTicket, setPresencialTicket] = useState([]);
@@ -101,6 +101,7 @@ export default function TicketType() {
   }
 
   async function reservedOnline() {
+    setTotalPrice(price);
     try{
       if(ticketAlreadyReserved === 200) {
         return toast('Você já possui um ticket reservado');
@@ -125,9 +126,12 @@ export default function TicketType() {
 
         toast('Ticket reservado com sucesso!');
       }
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }catch {
       toast('Algo inesperado aconteceu!');
-    }
+    } 
   }
   
   return(
