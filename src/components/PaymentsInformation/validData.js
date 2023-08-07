@@ -14,7 +14,7 @@ export  function validData(state) {
   const removeNonNumeric = (str) => str.replace(/\D/g, '');
   if((state.name === '') || 
        (state.number === '' || removeNonNumeric(state.number).length < 16) || 
-       (state.cvc === '' || removeNonNumeric(state.cvc).length < 2)) {
+       (state.cvc === '' || removeNonNumeric(state.cvc).length < 3)) {
     return true;
   }
   else{
