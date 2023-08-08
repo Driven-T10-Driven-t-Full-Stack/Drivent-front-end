@@ -1,14 +1,30 @@
 import { BsFillPersonFill, BsPerson } from 'react-icons/bs';
 
-export default function PersonSlots({ capacity, bookings }) {
+export default function PersonSlots({ capacity, bookings, selectedRoom, roomId }) {
   const filled = Array.from({ length: bookings }, (_, i) => (
     <BsFillPersonFill key={i} color={capacity === bookings ? '#8C8C8C' : 'black'} />
   ));
 
   const remainingCapacity = capacity - bookings;
-  const available = Array.from({ length: remainingCapacity }, (_, i) => <BsPerson key={i + bookings} />);
+  let shouldHighlight = false;
 
-  const allPersons = [...filled, ...available];
+  if (selectedRoom === roomId && remainingCapacity >= 1) {
+    shouldHighlight = true;
+  }
 
-  return allPersons;
+  const allPeople = [...filled];
+
+  // Renderização condicional do componente selecionado
+  if (shouldHighlight) {
+    allPeople.push(<BsFillPersonFill key='highlighted' color='#ff4791' />);
+  }
+
+  const available = Array.from(
+    { length: shouldHighlight ? remainingCapacity - 1 : remainingCapacity },
+    (_, i) => <BsPerson key={i + bookings} />
+  );
+
+  allPeople.push(...available);
+
+  return allPeople;
 }

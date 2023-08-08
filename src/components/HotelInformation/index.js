@@ -11,7 +11,8 @@ export default function HotelInformation() {
   const { hotels, hotelsError, hotelsLoading } = useHotel();
   const [selectedHotel, setSelectedHotel] = useState(false);
   const { getHotelRooms, hotelRooms } = useHotelRooms();
- 
+  const [selectedRoom, setSelectedRoom] = useState(false);
+
   useEffect(() => {
     if (selectedHotel) {
       // Chamamos a função getRooms com o novo valor de hotel.id quando selectedHotel mudar
@@ -59,7 +60,13 @@ export default function HotelInformation() {
             {hotelRooms && (
               <RoomsWrapper>
                 {hotelRooms.Rooms.map((room) => (
-                  <RoomBox key={room.id} room={room} selectedHotel={selectedHotel}/>
+                  <RoomBox
+                    key={room.id}
+                    room={room}
+                    selectedHotel={selectedHotel}
+                    selectedRoom={selectedRoom}
+                    setSelectedRoom={setSelectedRoom}
+                  />
                 ))}
               </RoomsWrapper>
             )}
