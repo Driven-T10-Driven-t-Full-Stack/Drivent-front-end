@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import PersonSlots from './PersonSlots.js';
 
-export default function RoomBox({ room, selectedHotel, selectedRoom, setSelectedRoom }) {
+export default function RoomBox({ room, selectedRoom, setSelectedRoom }) {
   return (
     <RoomContainer
       capacity={room.capacity}
@@ -12,7 +12,7 @@ export default function RoomBox({ room, selectedHotel, selectedRoom, setSelected
       onClick={() => setSelectedRoom(room.id)}
     >
       <Typography variant="subtitle1" component="p" style={{ fontSize: '20px', fontWeight: 'bold' }}>
-        {selectedHotel}
+        {room.id}
       </Typography>
       <span>
         <PersonSlots capacity={room.capacity} bookings={room.bookings} selectedRoom={selectedRoom} roomId={room.id} />

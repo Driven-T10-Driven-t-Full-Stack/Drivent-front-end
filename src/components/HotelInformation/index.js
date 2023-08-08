@@ -64,7 +64,6 @@ export default function HotelInformation() {
                   <RoomBox
                     key={room.id}
                     room={room}
-                    selectedHotel={selectedHotel}
                     selectedRoom={selectedRoom}
                     setSelectedRoom={setSelectedRoom}
                   />
