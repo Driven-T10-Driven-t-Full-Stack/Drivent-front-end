@@ -6,6 +6,7 @@ import HotelBox from './HotelBox.js';
 import errorMsgType from './ErrorMsgType.js';
 import useHotelRooms from '../../hooks/api/useHotelRooms.js';
 import RoomBox from './RoomBox.js';
+import Button from '../Form/Button.js';
 
 export default function HotelInformation() {
   const { hotels, hotelsError, hotelsLoading } = useHotel();
@@ -70,12 +71,20 @@ export default function HotelInformation() {
                 ))}
               </RoomsWrapper>
             )}
+            {/* INSERIR LOADING (COM VALORES TRUE/FALSE) NO DISABLED PARA DESABILITAR DE ACORDO */}
+            {selectedRoom && <ButtonStyle onClick={() => alert('selecionando a sala de id '+selectedRoom)} disabled={false}>
+              Reservar Quarto
+            </ButtonStyle>}
           </>
         )}
       </HotelPageContainer>
     </>
   );
 }
+
+const ButtonStyle = styled(Button)`
+  width: 182px;
+`;
 
 const RoomsWrapper = styled.div`
   display: flex;
