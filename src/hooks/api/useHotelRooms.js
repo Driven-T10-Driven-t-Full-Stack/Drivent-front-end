@@ -11,15 +11,7 @@ export default function useHotelRooms() {
     loading: hotelRoomsLoading,
     error: hotelRoomsError,
     act: getHotelRooms,
-  } = useAsync((hotelId) => {
-    // Verifica se hotelId é nulo ou indefinido e retorna null para hotelRooms
-    // if (!hotelId) {
-    //   return null;
-    // }
-
-    // Caso hotelId tenha valor, faz a chamada da API normalmente
-    return hotelApi.getHotelRooms(hotelId, token);
-  });
+  } = useAsync((hotelId) => hotelApi.getHotelRooms(hotelId, token), false);
 
   return {
     hotelRooms,

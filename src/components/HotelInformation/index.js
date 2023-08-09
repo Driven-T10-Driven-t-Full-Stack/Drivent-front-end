@@ -7,19 +7,24 @@ import errorMsgType from './ErrorMsgType.js';
 import useHotelRooms from '../../hooks/api/useHotelRooms.js';
 import RoomBox from './RoomBox.js';
 import Button from '../Form/Button.js';
+import useCreateBooking from '../../hooks/api/useCreateBooking.js';
+import { toast } from 'react-toastify';
 
 export default function HotelInformation() {
+  const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
   const { hotels, hotelsError, hotelsLoading } = useHotel();
   const [selectedHotel, setSelectedHotel] = useState(false);
   const { getHotelRooms, hotelRooms } = useHotelRooms();
   const [selectedRoom, setSelectedRoom] = useState(false);
+  const { createBooking, createBookingError } = useCreateBooking();
 
   useEffect(() => {
     if (selectedHotel) {
       // Chamamos a função getRooms com o novo valor de hotel.id quando selectedHotel mudar
       getHotelRooms(selectedHotel);
     }
-  }, [selectedHotel]);
+    if (createBookingError) console.log(createBookingError.response);
+  }, [selectedHotel, createBookingError]);
 
   if (hotelsLoading) {
     return 'Carregando...';
@@ -31,6 +36,20 @@ export default function HotelInformation() {
         <StyledError>{errorMsgType(hotelsError.response.data.message)}</StyledError>
       </ErrorContainer>
     );
+  }
+
+  function bookRoom(roomId) {
+    setDynamicInputIsLoading(true);
+    try {
+      createBooking({ roomId });
+      toast('Reserva feita com sucesso!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    } catch (err) {
+      toast('Não foi possível reservar o seu quarto! Tente novamente');
+      setDynamicInputIsLoading(false);
+    }
   }
 
   return (
@@ -61,19 +80,16 @@ export default function HotelInformation() {
             {hotelRooms && (
               <RoomsWrapper>
                 {hotelRooms.Rooms.map((room) => (
-                  <RoomBox
-                    key={room.id}
-                    room={room}
-                    selectedRoom={selectedRoom}
-                    setSelectedRoom={setSelectedRoom}
-                  />
+                  <RoomBox key={room.id} room={room} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
                 ))}
               </RoomsWrapper>
             )}
             {/* INSERIR LOADING (COM VALORES TRUE/FALSE) NO DISABLED PARA DESABILITAR DE ACORDO */}
-            {selectedRoom && <ButtonStyle onClick={() => alert('selecionando a sala de id '+selectedRoom)} disabled={false}>
-              Reservar Quarto
-            </ButtonStyle>}
+            {selectedRoom && (
+              <ButtonStyle onClick={() => bookRoom(selectedRoom)} disabled={dynamicInputIsLoading}>
+                Reservar Quarto
+              </ButtonStyle>
+            )}
           </>
         )}
       </HotelPageContainer>
