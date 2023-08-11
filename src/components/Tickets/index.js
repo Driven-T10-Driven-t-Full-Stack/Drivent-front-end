@@ -187,12 +187,12 @@ export default function TicketType({ setTotalPrice }) {
       <Container>
         <DivButton>
           <button className={firstColor} onClick={ticketOnline}disabled={disableFirstButton} >
-            <h2>{presencialTicket.name}</h2>
-            <h2>R$ {presencialTicket.price}</h2>
+            <h2>{presencialTicket?.name}</h2>
+            <h2>R$ {presencialTicket?.price}</h2>
           </button>
           <button className={secondColor} onClick={ticketOnline2} disabled={disableSecondButton}>
-            <h2>{onlineTicket.name}</h2>
-            <h2>R$ {onlineTicket.price}</h2>
+            <h2>{onlineTicket?.name}</h2>
+            <h2>R$ {onlineTicket?.price}</h2>
           </button>
         </DivButton>
         {display ?
@@ -250,10 +250,6 @@ const DivButton = styled.div`
       font-size: 14px;
       font-weight: 400;
     }
-  }
-
-  :hover{
-    background-color: #FFEED2;
   }
 
   button:hover {

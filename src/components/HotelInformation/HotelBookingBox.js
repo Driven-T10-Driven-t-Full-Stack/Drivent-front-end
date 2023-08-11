@@ -1,35 +1,48 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import { getRoomAvailabilityText } from './getRoomAvailabilityText.js';
 
-export default function HotelBox({ hotel, selectedHotel, setSelectedHotel }) {
+export default function HotelBookingBox({ booking }) {
+  const roomCapacityType = {
+    1: 'Single',
+    2: 'Double',
+    3: 'Triple',
+    default: 'Sem vagas',
+  };
+
+  const otherBookingsValue = {
+    1: 'Você',
+    2: 'Você e mais 1',
+    3: 'Você e mais 2',
+    default: 'Sala lotada!'
+  };
+
   return (
-    <HotelContainer selectedHotel={selectedHotel} hotelId={hotel.id} onClick={() => setSelectedHotel(hotel.id)}>
+    <HotelBookingContainer>
       <ImgBox>
-        <img src={hotel.image} alt="HotelImg" />
+        <img src={booking.Room.Hotel.image} alt="HotelImg" />
       </ImgBox>
       <Typography variant="subtitle1" component="p" style={{ fontSize: '20px', lineBreak: 'normal' }}>
-        {hotel.name}
+        {booking.Room.Hotel.name}
       </Typography>
       <HotelInfo>
         <div>
           <Typography variant="subtitle2" component="p" style={{ fontWeight: 'bold' }}>
-            Tipo de acomodação
+            Quarto reservado
           </Typography>
           <Typography variant="subtitle2" component="p" style={{ lineHeight: '1em' }}>
-            {getRoomAvailabilityText(hotel.accomodationTypes)}
+            {`${booking.Room.id} (${roomCapacityType[booking.Room.capacity]})`}
           </Typography>
         </div>
         <div>
           <Typography variant="subtitle2" component="p" style={{ fontWeight: 'bold' }}>
-            Vagas disponíveis
+            Pessoas no seu quarto
           </Typography>
           <Typography variant="subtitle2" component="p" style={{ lineHeight: '1em' }}>
-            {hotel.availableRoomCapacity}
+            {otherBookingsValue[booking.totalBookings]}
           </Typography>
         </div>
       </HotelInfo>
-    </HotelContainer>
+    </HotelBookingContainer>
   );
 }
 
@@ -52,7 +65,7 @@ const ImgBox = styled.div`
   }
 `;
 
-const HotelContainer = styled.div`
+const HotelBookingContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -60,7 +73,7 @@ const HotelContainer = styled.div`
   min-width: 196px;
   width: 196px;
   min-height: 264px;
-  background-color: ${({ selectedHotel, hotelId }) => (selectedHotel === hotelId ? '#FFEED2' : '#ddd')};
+  background-color: #ffeed2;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
