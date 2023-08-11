@@ -2,6 +2,7 @@ import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import Button from '../Form/Button';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function CertificateInformation() {
   const gerarCertificado = async() => {
@@ -26,7 +27,7 @@ export default function CertificateInformation() {
       // Limpe a URL temporária
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Erro ao gerar certificado:', error);
+      toast('Algo inesperado aconteceu!');
     }
   };
   return(

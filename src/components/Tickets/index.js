@@ -28,15 +28,16 @@ export default function TicketType({ setTotalPrice }) {
   useEffect(async() => {
     const tickets = await getTicket();
     // eslint-disable-next-line no-console
-    console.log(tickets.data);
-    const presencialTickets = tickets.data[0];
-    const ticketTypeId = tickets.data[1];
-    const onlineTickets = tickets.data[2];
+    console.log(tickets?.data);
+    const presencialTickets = tickets?.data[0];
+    console.log(presencialTickets)
+    const ticketTypeId = tickets?.data[1];
+    const onlineTickets = tickets?.data[2];
     setPresencialTicket(presencialTickets);
     setOnlineTicket(onlineTickets);
     setTicketsTypeIds(ticketTypeId);
     const ticket = await getTicketUser();
-    setTicketAlreadyReserved(ticket.status);
+    setTicketAlreadyReserved(ticket?.status);
   }, []);
 
   function changeColor() {
@@ -187,12 +188,12 @@ export default function TicketType({ setTotalPrice }) {
       <Container>
         <DivButton>
           <button className={firstColor} onClick={ticketOnline}disabled={disableFirstButton} >
-            <h2>{presencialTicket.name}</h2>
-            <h2>R$ {presencialTicket.price}</h2>
+            <h2>{presencialTicket?.name}</h2>
+            <h2>R$ {presencialTicket?.price}</h2>
           </button>
           <button className={secondColor} onClick={ticketOnline2} disabled={disableSecondButton}>
-            <h2>{onlineTicket.name}</h2>
-            <h2>R$ {onlineTicket.price}</h2>
+            <h2>{onlineTicket?.name}</h2>
+            <h2>R$ {onlineTicket?.price}</h2>
           </button>
         </DivButton>
         {display ?
