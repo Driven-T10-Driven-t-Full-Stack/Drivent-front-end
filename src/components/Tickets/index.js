@@ -253,10 +253,6 @@ const DivButton = styled.div`
     }
   }
 
-  :hover{
-    background-color: #FFEED2;
-  }
-
   button:hover {
     border: 1px solid blue;
     cursor: pointer;
