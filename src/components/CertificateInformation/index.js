@@ -3,17 +3,21 @@ import styled from 'styled-components';
 import Button from '../Form/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 export default function CertificateInformation() {
   const gerarCertificado = async() => {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const token = userData.token;
     try {
       const config = {
         headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY5MTA4OTQ4MH0.pwkirML5TPVnG6X4RFYKZHQzNiuMnAW9UeuNkHC9sEk'
+          'Authorization': `Bearer ${token}`
         },
         responseType: 'arraybuffer', // Alterado para arraybuffer
       };
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/certificate`, config);
+      console.log(response)
       // Crie um blob a partir da resposta
       const contentType = response.headers['content-type'];
       const blob = new Blob([response.data], { type: contentType });
