@@ -164,7 +164,7 @@ export default function PersonalInformationForm() {
               label="Data de Nascimento"
               inputVariant="outlined"
               clearable
-              value={dayjs(data.birthday).format('YYYY-MM-DD').toString()}
+              value={dayjs(data.birthday).toDate()}
               onChange={(date) => {
                 customHandleChange('birthday', (d) => d && dayjs(d).format('YYYY-MM-DD'))(date);
               }}
