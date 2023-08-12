@@ -25,7 +25,6 @@ export default function HotelInformation({ hasBooking }) {
       // Chamamos a função getRooms com o novo valor de hotel.id quando selectedHotel mudar
       getHotelRooms(selectedHotel);
     }
-    if (createBookingError) console.log(createBookingError.response);
   }, [selectedHotel, createBookingError]);
 
   if (hotelsLoading) {
