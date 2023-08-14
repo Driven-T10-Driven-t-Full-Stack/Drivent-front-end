@@ -6,9 +6,7 @@ import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import MountedDays from './MountedDays.js';
 import {
-  Days,
   Container,
-  Day,
   BlockActivities,
   Activity,
   Description,
@@ -32,21 +30,10 @@ export default function ActivitiesInformations() {
   const { getUserActivities } = useUserActivity();
   const { postActivities } = useActivityPost();
   const uniqueDays = new Set();
-  const [days, setDays] = useState([]);
-  const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
   useEffect(async() => {
     const activitiesData = await getAllActivities();
     const activitiesUser = await getUserActivities();
-    for (let i = 0; i < activitiesData.length; i++) {
-      const day = activitiesData[i].startedTime;
-      const newDay = dayjs(day).format('DD/MM');
-      if (!days.includes(newDay) && activitiesData[i].isRemote === false) {
-        const list = days;
-        list.push(newDay);
-        setDays(list);
-      }
-    }
 
     for (let i = 0; i < activitiesUser.length; i++) {
       const el = activitiesUser[i];
@@ -71,9 +58,9 @@ export default function ActivitiesInformations() {
     }, 800);
   }
 
-  function subscribeActivity(activityId) {
+  function subscribeActivity(activityId, isRemote) {
     try {
-      postActivities({ activityId });
+      postActivities({ activityId, isRemote });
       toast('Sua vaga foi confirmada!');
       setRefresh(true);
     } catch {
@@ -115,7 +102,7 @@ export default function ActivitiesInformations() {
                 <Icon>
                   {activitiesUser.includes(e.id) ? (
                     <>
-                      <CheckmarkCircleOutline color={'#078632'} height="250px" width="250px" />
+                      <CheckmarkCircleOutline color={'#078632'} height="25px" width="25px" />
                       <p style={{ color: '#078632' }}>Inscrito</p>
                     </>
                   ) : e.capacity <= 0 ? (
@@ -238,7 +225,6 @@ export default function ActivitiesInformations() {
                   ) : (
                     <>
                       <EnterOutline
-                        onClick={() => subscribeActivity(e.id)}
                         onClick={() => subscribeActivity(e.id, false)}
                         color={'#078632'}
                         height="30px"

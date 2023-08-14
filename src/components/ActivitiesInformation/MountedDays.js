@@ -37,7 +37,7 @@ export default function MountedDays({ activityDays, uniqueDays, selectDay, setSe
           <Day
             key={e.id}
             onClick={() => handleWeekDay(e, dayjs(e.startedTime).format('DD/MM'))}
-            backgound={selectDay.includes(e) ? '#FFD37D' : '#E0E0E0'}
+            background={selectDay.includes(e) ? '#FFD37D' : '#E0E0E0'}
           >
             {daysOfWeek[dayjs(e.startedTime).day()]} {dayjs(e.startedTime).format('DD/MM')}
           </Day>
