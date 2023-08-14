@@ -13,6 +13,8 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
+import GitHubLogin from '../../components/GitHubLogin';
+import styled from 'styled-components';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -52,9 +54,17 @@ export default function SignIn() {
           <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
         </form>
       </Row>
+      <DivButton>
+        <GitHubLogin />
+      </DivButton>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
       </Row>
     </AuthLayout>
   );
 }
+
+const DivButton = styled.div`
+   cursor: pointer;
+   border-radius: 8px;
+`;
