@@ -12,6 +12,8 @@ import Link from '../../components/Link';
 import EventInfoContext from '../../contexts/EventInfoContext';
 
 import useSignUp from '../../hooks/api/useSignUp';
+import GitHubLogin from '../../components/GitHubLogin';
+import styled from 'styled-components';
 
 export default function Enroll() {
   const [email, setEmail] = useState('');
@@ -55,9 +57,17 @@ export default function Enroll() {
           <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>Inscrever</Button>
         </form>
       </Row>
+      <DivButton>
+        <GitHubLogin />
+      </DivButton>
       <Row>
         <Link to="/sign-in">Já está inscrito? Faça login</Link>
       </Row>
     </AuthLayout>
   );
 }
+
+const DivButton = styled.div`
+   cursor: pointer;
+   border-radius: 8px;
+`;
