@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useActivity, useActivityPost, useUserActivity } from '../../hooks/api/useActivity';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import MountedDays from './MountedDays.js';
 import {
   Days,
   Container,
@@ -30,6 +31,7 @@ export default function ActivitiesInformations() {
   const { getAllActivities, activityError } = useActivity();
   const { getUserActivities } = useUserActivity();
   const { postActivities } = useActivityPost();
+  const uniqueDays = new Set();
   const [days, setDays] = useState([]);
   const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
@@ -69,17 +71,9 @@ export default function ActivitiesInformations() {
     }, 800);
   }
 
-  function handleWeekDay(activity) {
-    if (!selectDay.includes(activity)) {
-      setSelectDay([activity]);
-    } else {
-      setSelectDay(selectDay.filter((e) => e !== activity));
-    }
-  }
-
-  function subscribeActivity(activityId, isRemote) {
+  function subscribeActivity(activityId) {
     try {
-      postActivities({ activityId, isRemote });
+      postActivities({ activityId });
       toast('Sua vaga foi confirmada!');
       setRefresh(true);
     } catch {
@@ -97,17 +91,12 @@ export default function ActivitiesInformations() {
 
   return (
     <>
-      <Days>
-        {activityDays.map((e, index) =>
-          e.isRemote === true ? (
-            <div key={index}></div>
-          ) : (
-            <Day key={index} onClick={() => handleWeekDay(e)} backgound={selectDay.includes(e) ? '#FFD37D' : '#E0E0E0'}>
-              {daysOfWeek[dayjs(e.startedTime).day()]} {dayjs(e.startedTime).format('DD/MM')}
-            </Day>
-          )
-        )}
-      </Days>
+      <MountedDays
+        activityDays={activityDays}
+        uniqueDays={uniqueDays}
+        selectDay={selectDay}
+        setSelectDay={setSelectDay}
+      />
       <Container>
         <div className="Principal">
           <h2>Auditório Principal</h2>
@@ -249,6 +238,7 @@ export default function ActivitiesInformations() {
                   ) : (
                     <>
                       <EnterOutline
+                        onClick={() => subscribeActivity(e.id)}
                         onClick={() => subscribeActivity(e.id, false)}
                         color={'#078632'}
                         height="30px"
