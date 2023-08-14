@@ -28,9 +28,7 @@ export default function TicketType({ setTotalPrice }) {
   useEffect(async() => {
     const tickets = await getTicket();
     // eslint-disable-next-line no-console
-    console.log(tickets?.data);
     const presencialTickets = tickets?.data[0];
-    console.log(presencialTickets);
     const ticketTypeId = tickets?.data[1];
     const onlineTickets = tickets?.data[2];
     setPresencialTicket(presencialTickets);

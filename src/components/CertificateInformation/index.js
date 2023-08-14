@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Button from '../Form/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 
 export default function CertificateInformation() {
   const gerarCertificado = async() => {
@@ -17,7 +16,6 @@ export default function CertificateInformation() {
         responseType: 'arraybuffer', // Alterado para arraybuffer
       };
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/certificate`, config);
-      console.log(response);
       // Crie um blob a partir da resposta
       const contentType = response.headers['content-type'];
       const blob = new Blob([response.data], { type: contentType });
