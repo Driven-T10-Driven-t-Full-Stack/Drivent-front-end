@@ -1,11 +1,22 @@
 import { CheckmarkCircleOutline, CloseCircleOutline, EnterOutline } from 'react-ionicons';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useActivityGet, useActivityPost, useGetUserActivity } from '../../hooks/api/useActivity';
+import { useActivity, useActivityPost, useUserActivity } from '../../hooks/api/useActivity';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
-import { Container, BlockActivities, Activity, Description, Line, Icon } from './styled';
 import MountedDays from './MountedDays.js';
+import {
+  Days,
+  Container,
+  Day,
+  BlockActivities,
+  Activity,
+  Description,
+  Line,
+  Icon,
+  ErrorContainer,
+  StyledError,
+} from './styled';
 
 export default function ActivitiesInformations() {
   const idActivitiesUser = [];
@@ -17,14 +28,26 @@ export default function ActivitiesInformations() {
   const [lateral, setLateral] = useState([]);
   const [workshop, setWorkshop] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
-  const { getAllActivities } = useActivityGet();
-  const { getUserActivities } = useGetUserActivity();
+  const { getAllActivities, activityError } = useActivity();
+  const { getUserActivities } = useUserActivity();
   const { postActivities } = useActivityPost();
   const uniqueDays = new Set();
+  const [days, setDays] = useState([]);
+  const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
   useEffect(async() => {
     const activitiesData = await getAllActivities();
     const activitiesUser = await getUserActivities();
+    for (let i = 0; i < activitiesData.length; i++) {
+      const day = activitiesData[i].startedTime;
+      const newDay = dayjs(day).format('DD/MM');
+      if (!days.includes(newDay) && activitiesData[i].isRemote === false) {
+        const list = days;
+        list.push(newDay);
+        setDays(list);
+      }
+    }
+
     for (let i = 0; i < activitiesUser.length; i++) {
       const el = activitiesUser[i];
       idActivitiesUser.push(el.activityId);
@@ -56,6 +79,14 @@ export default function ActivitiesInformations() {
     } catch {
       toast('Erro ao se inscrever');
     }
+  }
+
+  if (activityError) {
+    return (
+      <ErrorContainer>
+        <StyledError>Você precisa ter confirmado o pagamento antes de fazer a escolha de atividades</StyledError>
+      </ErrorContainer>
+    );
   }
 
   return (
@@ -101,7 +132,7 @@ export default function ActivitiesInformations() {
                   ) : (
                     <>
                       <EnterOutline
-                        onClick={() => subscribeActivity(e.id)}
+                        onClick={() => subscribeActivity(e.id, false)}
                         color={'#078632'}
                         height="30px"
                         width="30px"
@@ -154,7 +185,7 @@ export default function ActivitiesInformations() {
                   ) : (
                     <>
                       <EnterOutline
-                        onClick={() => subscribeActivity(e.id)}
+                        onClick={() => subscribeActivity(e.id, false)}
                         color={'#078632'}
                         height="30px"
                         width="30px"
@@ -208,6 +239,7 @@ export default function ActivitiesInformations() {
                     <>
                       <EnterOutline
                         onClick={() => subscribeActivity(e.id)}
+                        onClick={() => subscribeActivity(e.id, false)}
                         color={'#078632'}
                         height="30px"
                         width="30px"

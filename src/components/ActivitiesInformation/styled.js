@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
 
 export const Container = styled.div`
     display: flex;
@@ -20,7 +21,7 @@ export const Days = styled.div`
 export const Day = styled.div`
   width: 130px;
   height: 37px;
-  background-color: ${props => props.backgound};
+  background-color: ${props => props.background};
   border-radius: 4px;
   display: flex;
   justify-content: center;
@@ -80,4 +81,24 @@ export const Icon = styled.div`
     p{
       font-size: 9px;
     }
+`;
+
+export const ErrorContainer = styled.div`
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const StyledError = styled(Typography)`
+  && {
+    max-width: 388px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #8e8e8e;
+  }
 `;
