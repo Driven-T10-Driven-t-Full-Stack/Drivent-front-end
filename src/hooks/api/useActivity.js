@@ -2,21 +2,21 @@ import useAsync from '../useAsync';
 import useToken from '../useToken';
 import * as activityApi from '../../services/activityApi';
 
-export function useActivityGet() {
+export function useActivity() {
   const token = useToken();
 
   const {
     data: activity,
     loading: activityLoading,
     error: activityError,
-    act: getAllActivities
-  } = useAsync(() => activityApi.getActivities(token));
+    act: getAllActivities,
+  } = useAsync(() => activityApi.getActivities(token), false);
 
   return {
     activity,
     activityLoading,
     activityError,
-    getAllActivities
+    getAllActivities,
   };
 }
 
@@ -27,31 +27,31 @@ export function useActivityPost() {
     data: activity,
     loading: activityLoading,
     error: activityError,
-    act: postActivities
-  } = useAsync((data) => activityApi.postActivities(data, token));
+    act: postActivities,
+  } = useAsync((data) => activityApi.postActivities(data, token), false);
 
   return {
     activity,
     activityLoading,
     activityError,
-    postActivities
+    postActivities,
   };
 }
 
-export function useGetUserActivity() {
+export function useUserActivity() {
   const token = useToken();
 
   const {
     data: activity,
     loading: activityLoading,
     error: activityError,
-    act: getUserActivities
-  } = useAsync((data) => activityApi.getUserActivities(token));
+    act: getUserActivities,
+  } = useAsync((data) => activityApi.getUserActivities(token), false);
 
   return {
     activity,
     activityLoading,
     activityError,
-    getUserActivities
+    getUserActivities,
   };
 }
